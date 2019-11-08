@@ -1,0 +1,77 @@
+{% extends 'admin_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row" style="padding-top:25px">
+    <div class="col-md-4">
+        <div class="card bg-danger  mx-sm-1 p-3">
+            <div class="header">
+                <h4 class="title text-center font-weight-bold">Open contests</h4>
+            </div>
+            <div class="content text-white text-center mt-2">
+                <p style="font-size:60px">{% if contests == 0 %} 0 {% else %} {{ contests }} {% endif %}</p>
+                <a href="{% url 'Core:contest_page' %}" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-warning mx-sm-1 p-3">
+            <div class="header">
+                <h4 class="title text-center font-weight-bold">Registered Contestants</h4>
+            </div>
+            <div class="content text-white text-center mt-2">
+                <p style="font-size:60px">{% if contestants == 0 %} 0 {% else %} {{ contestants }} {% endif %}</p>
+                <a href="{% url 'Core:contestants_page' %}" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success mx-sm-1 p-3">
+            <div class="header">
+                <h4 class="title text-center font-weight-bold">Registered Voters</h4>
+            </div>
+            <div class="content text-white text-center mt-2 font-weight-bold">
+                <p style="font-size:60px">{% if students == 0 %} 0 {% else %} {{ students }} {% endif %}</p>
+                <a href="{% url 'Core:students_page' %}" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="padding-top:30px">
+    <div class="col-md-12">
+        <div class="card ms-sm-1 p-3">
+            <div class="header">
+                <h4 class="title text-center font-weight-bold" style="font-size:30px">Available Sits</h4>
+            </div>
+            <div class="content">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" style="font-size:20px">#</th>
+                        <th scope="col" style="font-size:20px">Name</th>
+                        <th scope="col" style="font-size:20px">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for data in positions %}
+                    <tr>
+                        <th scope="row" style="font-size:30px">{{ forloop.counter }}</th>
+                        <td class="font-weight-bold" style="font-size:30px">{{ data | capfirst}}</td>
+                        <td><a href="{% url 'Core:delete_position' slug=data.pk %}"><span class="glyphicon glyphicon-trash" style="font-size:30px"></span> </a></td>
+
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="col-md-12">
+                    <h4 class="title text-center font-weight-bold" style="font-size:30px">Add New Sit</h4>
+                    <form method="post" action="{% url 'Core:add_position' %}">
+                        {% csrf_token %}
+                        {% crispy position_form %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

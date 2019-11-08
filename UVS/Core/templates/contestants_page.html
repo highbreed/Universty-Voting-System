@@ -1,0 +1,56 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<div class="row" style="padding-top:30px">
+    <div class="col-md-12">
+        <h4 class="title text-center font-weight-bold" style="font-size:30px">Contestants</h4>
+            {% for contest in contests %}
+                <div class="card ">
+                    <div class="header">
+                        <h4 class="title text-center font-weight-bold" style="font-size:25px">{{ contest }}</h4>
+
+                    </div>
+                    <div class="card-body">
+                         {% for sits in contest.open_positions.all %}
+                        <div class="col-md-6">
+                            <div id="accordion">
+                              <div class="card bg-dark">
+                                <div class="card-header" id="headingOne">
+                                  <h5 class="mb-3">
+                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#{{ contest }}{{ sits }}" aria-expanded="true" aria-controls="collapseOne">
+                                      {{ sits | capfirst }}
+                                    </button>
+                                  </h5>
+                                </div>
+
+                                <div id="{{ contest }}{{ sits }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                    <div class="row">
+                                    {% for contestant in contestants %}
+                                        {% if contestant.contest == contest and contestant.position == sits %}
+                                            <div class="col-md-6">
+                                                <div class="card-body">
+                                                    <div class="card" style="width: 20rem;">
+                                                      <img class="card-img-top" src="/media/{{ contestant.image }}" alt="Card image cap">
+                                                      <div class="card-body">
+                                                        <h5 class="card-title text-center font-weight-bold" style="font-size:15px">Name: {{ contestant | capfirst}}</h5>
+                                                        <p class="card-text">Gender:{{ contestant.name.gender }}</p>
+                                                          <p class="card-text">Admission Number: {{ contestant.name.adm_number }}</p>
+                                                      </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+    </div>
+</div>
+{% endblock %}

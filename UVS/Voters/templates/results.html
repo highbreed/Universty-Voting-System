@@ -1,0 +1,169 @@
+{% extends 'voter_base.html' %}
+
+
+{% block content %}
+<div class="row" style="padding-top:20px;">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="title text-center">Contest Progress</h4>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for each_contest in contests %}
+                    <tr>
+                        <!-- Modal  Trigger -->
+                        <td><a class="btn btn-primary " data-toggle="modal" data-target="#{{each_contest }}">{{ each_contest }}</a></td>
+                        <td>{% if 'ended' in each_contest.status %}<span class="badge badge-danger" >{{ each_contest.status }}</span>
+                            {% else %}<span class="badge badge-success">{{ each_contest.status }}</span>{% endif %}</td>
+                        <!-- Modal Structure -->
+                        <div class="modal fade " id="{{ each_contest }}" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="card-header">
+                                        <h4 class="title text-center">{{ each_contest }}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% for open_position in each_contest.open_positions.all %}
+                                        <div class="col-md-12">
+                                            <div id="accordion">
+                                                <div class="card">
+                                                    <div class="card-header" id="headingOne">
+                                                        <h5 class="mb-3">
+                                                            <a class="btn btn-link collapsed" data-toggle="collapse"
+                                                               data-target="#{{ each_contest }}{{ open_position }}"
+                                                               aria-expanded="true" aria-controls="collapseOne">
+                                                                {{ open_position | capfirst}}
+                                                            </a>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="{{ each_contest }}{{ open_position }}" class="collapse"
+                                                         aria-labelledby="headingOne" data-parent="#accordion">
+                                                        <div class="row">
+                                                            {% for contestant in contestants %}
+                                                                {% if contestant.contest == each_contest and contestant.position == open_position %}
+                                                                    <div class="col-md-6">
+                                                                        <div class="card-body">
+                                                                            <div class="card" style="width: 20rem;">
+                                                                                <img class="card-img-top" src="/media/{{ contestant.image }}" alt="Card image cap">
+                                                                                <div class="card-body">
+                                                                                    <h5 class="card-title text-center font-weight-bold" style="font-size:15px">
+                                                                                        Name: {{ contestant | capfirst}}</h5>
+                                                                                    <p class="card-text">Slogan: {{ contestant.name.adm_number }}</p>
+                                                                                    <h1 class="card-text text-center" style="font-family: 'Roboto Condensed', sans-serif;">{{ contestant.votes }} <small class="text-muted">Votes</small></h1>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Winner Contest -->
+    <div class="col-md-12" style="padding-top:30px;">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="title text-center">Contest Winners</h4>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Contest Name</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for each_contest in contests %}
+                    {% if each_contest.status == 'results relesed' %}
+                    <tr>
+                        <!-- Modal  Trigger -->
+                        <td><a class="btn btn-primary " data-toggle="modal" data-target="#{{each_contest }}">{{ each_contest }}</a></td>
+                        <td><span class="badge badge-success">{{ each_contest.status }}</span></td>
+                        <!-- Modal Structure -->
+                        <div class="modal fade " id="{{ each_contest }}2" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="card-header">
+                                        <h5 class=" title text-center" style="text-align:center">{{ each_contest }}</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% for open_position in each_contest.open_positions.all %}
+                                        <div class="col-md-12">
+                                            <div id="accordion-2">
+                                                <div class="card">
+                                                    <div class="card-header" id="headingOne-2">
+                                                        <h5 class="mb-3">
+                                                            <a class="btn btn-link collapsed" data-toggle="collapse"
+                                                               data-target="#{{ each_contest }}{{ open_position }}"
+                                                               aria-expanded="true" aria-controls="collapseOne">
+                                                                {{ open_position | capfirst}}
+                                                            </a>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="{{ each_contest }}{{ open_position }}-2" class="collapse"
+                                                         aria-labelledby="headingOne" data-parent="#accordion">
+                                                        <div class="row">
+                                                            {% for contestant in contestants %}
+                                                                {% if contestant.contest == each_contest and contestant.position == open_position %}
+                                                                    <div class="col-md-6">
+                                                                        <div class="card-body">
+                                                                            <div class="card" style="width: 20rem;">
+                                                                                <img class="card-img-top" src="/media/{{ contestant.image }}" alt="Card image cap">
+                                                                                <div class="card-body">
+                                                                                    <h5 class="card-title text-center font-weight-bold" style="font-size:15px">
+                                                                                        Name: {{ contestant | capfirst}}</h5>
+                                                                                    <p class="card-text">Slogan: {{ contestant.name.adm_number }}</p>
+                                                                                    <h1 class="card-text text-center" style="font-family: 'Roboto Condensed', sans-serif;">{{ contestant.votes }} <small class="text-muted">Votes</small></h1>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

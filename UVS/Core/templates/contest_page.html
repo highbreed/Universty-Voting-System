@@ -1,0 +1,31 @@
+{% extends 'admin_base.html' %}
+{% load tz %}
+
+{% block content %}
+<div class="row" style="padding-top:25px">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h2 class="title text-center font-weight-bold" style="font-size:35px">Open Contests</h2>
+            </div>
+            <div class="content">
+                {% for contest in contests %}
+                <div class="col-md-6" style="padding-top:20px">
+                    <div class="card bg-dark">
+                        <div class="header">
+                            <h4 class="title text-center text-white" style="font-size:25px">{{ contest | capfirst }}</h4>
+                        </div>
+                    <div class="card-body">
+                        <p class="text-white" style="font-size:25px">Voting starts: {{ contest.voting_start }}</p>
+                        <p class="text-white" style="font-size:25px">Voting ends: {{ contest.voting_end }}</p>
+                        <p class="text-white" style="font-size:25px">Registration: <a class="btn btn-primary float-right">
+                           {% if contest.registration_end|utc < now|utc %} Ended {% else %}  On Going {% endif %}</a> </p>
+                    </div>
+                </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

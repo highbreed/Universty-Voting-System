@@ -1,0 +1,35 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<div class="row" style="padding-top:25px">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title text-center font-weight-bold" style="font-size:30px">Registered Voters</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First name</th>
+                        <th scope="col">Last name</th>
+                        <th scope="col">Adm number</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ student.first_name | capfirst}}</td>
+                        <td>{{ student.last_name | capfirst}}</td>
+                        <td>{{ student.adm_number | capfirst}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'voter_base.html' %}
+
+{% block content %}
+<div class="row" style="padding-top:10px;">
+    <div class="col s12 m12">
+         <h1 style="text-align:center;">Contests</h1>
+        <div class="card shadow p-3 mb-5 bg-white rounded">
+            <div class="card-content">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for each_contest in contests %}
+                    {% if each_contest.status == 'voting ongoing' %}
+                    <tr>
+                        <!-- Modal  Trigger -->
+                        <td><a class="btn btn-primary " data-toggle="modal" data-target="#{{ each_contest }}">{{ each_contest }}</a></td>
+                        <td><span class="badge badge-success">{{ each_contest.status }}</span> </td>
+                        <!-- Modal Structure -->
+                        <div class="modal fade bd-example-modal-lg" id="{{ each_contest }}" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <div class="card-header">
+                                            <h4 class="title text-center">{{each_contest }}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            {% for open_position in each_contest.open_positions.all %}
+                                            <div class="col-md-12">
+                                                <div id="accordion">
+                                                    <div class="card">
+                                                        <div class="card-header" id="headingOne">
+                                                            <h5 class="mb-3">
+                                                                <a class="btn btn-link collapsed" data-toggle="collapse" data-target="#{{ each_contest }}{{ open_position }}" aria-expanded="true" aria-controls="collapseOne">
+                                                                    {{ open_position | capfirst}}
+                                                                </a>
+                                                            </h5>
+                                                        </div>
+                                                        <div id="{{ each_contest }}{{ open_position }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                                            <div class="row">
+                                                                <!-- multiple select by id -->
+
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <label class="input-group-text" for="inputGroupSelect01">Select</label>
+                                                                    </div>
+                                                                    <select class="custom-select" id="inputGroupSelect01" name="votes">
+                                                                        <option selected="selected">Select Candidate:</option>
+                                                                        {% for contestant in contestants %}
+                                                                            {% if contestant.contest == each_contest and contestant.position == open_position %}
+                                                                            <option value="{{ contestant.id }}">{{ contestant }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="card-footer">
+                                            <input type="submit" value="Submit" class="float-right">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

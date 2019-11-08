@@ -1,0 +1,18 @@
+{% extends 'account_base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12" style="padding-top:20px;">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="title text-center">Welcome</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="title text-center">Login as:</h5>
+                <a class="btn btn-primary" href="{% url 'Accounts:student_login' %}">Student</a>
+                <a class="btn btn-success float-right" href="{% url 'Accounts:teacher_login' %}">Teacher</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
